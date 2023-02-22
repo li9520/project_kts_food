@@ -1,0 +1,32 @@
+@import url("../../styles/variables.css");
+
+.button {
+  background-color: var(--main);
+  border-radius: 7px;
+  border: none;
+  cursor:pointer;
+  font-size: 18px;
+  line-height: 25px;
+  font-weight: 500;
+  color: var(--white);
+  
+  padding: 8px 14px;
+
+  box-shadow: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 9px;
+
+}
+
+.button_disabled {
+  background-color: var(--disable-main);
+  cursor: default;
+  pointer-events: none;
+}
+
+.button:hover {
+  opacity: 0.5;
+}
