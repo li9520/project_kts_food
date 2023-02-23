@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { API_KEY } from "@config/api";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
@@ -11,10 +12,10 @@ const RecipePage = () => {
   const [card, setCards] = useState<RenderPageProps | null>(null);
 
   useEffect(() => {
-    const getData = async () => {
+    const fetchData = async () => {
       await axios({
         method: "get",
-        url: `https://api.spoonacular.com/recipes/${id}/information?apiKey=2593c1f9f006463c98678507137c57e2`,
+        url: `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`,
       })
         .then((response) => {
           setCards({
@@ -26,7 +27,8 @@ const RecipePage = () => {
         })
         .catch((error) => setError(error));
     };
-    getData();
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (error) return <div>"error!"</div>;

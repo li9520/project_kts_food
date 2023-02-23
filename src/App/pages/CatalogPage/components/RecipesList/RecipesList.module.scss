@@ -12,8 +12,10 @@
 
 .recipes {
   @extend %flex_row;
+  margin: 0 -14px;
     &_item {
       box-sizing: border-box;
-    width: calc(1100px / 3 - 50px) ;
-  }
+      width: calc(1100px / 3 - 34px);
+      margin: 0 15px;
+    }
 }

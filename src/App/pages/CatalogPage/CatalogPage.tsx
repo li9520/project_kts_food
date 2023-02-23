@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@components/Button";
 import { Loader, LoaderSize } from "@components/Loader";
+import { API_KEY } from "@config/api";
 import axios from "axios";
 
 import styles from "./CatalogPage.module.scss";
@@ -14,8 +15,6 @@ const CatalogPage = () => {
   const [currentPage, setcurrentPage] = useState(1);
   const [recipesPerPage] = useState(12);
   const [NumberRecipes] = useState(100);
-
-  const API_KEY = "2593c1f9f006463c98678507137c57e2";
 
   const fetchData = async () => {
     await axios({
@@ -41,7 +40,13 @@ const CatalogPage = () => {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+    setLoading(false);
+  }, [currentPage]);
 
   if (loading) return <Loader size={LoaderSize.l} />;
   if (error) return <div>error!</div>;
@@ -51,17 +56,28 @@ const CatalogPage = () => {
   const currentRecipes = cards.slice(firstRecipeIndex, lastRecipeIndex);
   const numberPages = Math.ceil(NumberRecipes / recipesPerPage);
 
-  const nextPage = () =>
-    setcurrentPage((prev) => (prev === numberPages ? 1 : prev + 1));
-  const prevPage = () =>
-    setcurrentPage((prev) => (prev === 1 ? numberPages : prev - 1));
+  const nextPage = () => {
+    setLoading(true);
+    setcurrentPage((prev) => prev + 1);
+  };
+  const prevPage = () => {
+    setLoading(true);
+    setcurrentPage((prev) => prev - 1);
+  };
 
   return (
     <div className={`${styles.catalog}`}>
       <RecipesList recipes={currentRecipes} />
       <div className={`${styles.catalog_paginate}`}>
-        <Button onClick={prevPage}>Prev page</Button>
-        <Button onClick={nextPage}>Next page</Button>
+        <Button disabled={currentPage === 1} onClick={prevPage}>
+          Prev page
+        </Button>
+        <div className={`${styles.catalog_paginate_numbering}`}>
+          {`${currentPage} / ${numberPages}`}
+        </div>
+        <Button disabled={currentPage === numberPages} onClick={nextPage}>
+          Next page
+        </Button>
       </div>
     </div>
   );
