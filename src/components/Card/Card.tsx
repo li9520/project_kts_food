@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./Card.css";
+import styles from "./Card.module.scss";
 
 export type CardProps = {
   id: any;
@@ -31,13 +31,15 @@ const Card: React.FC<CardProps> = ({
     onClick && onClick(e);
   };
 
-  const titleDom = <div className="card_title">{title}</div>;
-  const subtitleDom = <div className="card_subtitle">{subtitle}</div>;
+  const titleDom = <div className={`${styles.card_title}`}>{title}</div>;
+  const subtitleDom = (
+    <div className={`${styles.card_subtitle}`}>{subtitle}</div>
+  );
   const contentDom = <div>{content}</div>;
 
   return (
-    <div className="card" onClick={handleClick}>
-      <div className="card_body">
+    <div className={`${styles.card}`} onClick={handleClick}>
+      <div className={`${styles.card_body}`}>
         <CardImage image={image} />
         {titleDom}
         {subtitleDom}

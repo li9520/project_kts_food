@@ -1,10 +1,10 @@
-@import url("../../styles/variables.css");
+@import "../../styles/variables.scss";
 
 .loader {
   display: block;
   margin: 0 auto;
   border-style: solid;
-  border-color: var(--main);
+  border-color: $main;
   border-top-color: transparent;
   
   border-radius: 50%;
@@ -15,7 +15,7 @@
 }
 
 .loader_white {
-  border-color: var(--white);
+  border-color: $white-color;
   border-top-color: transparent;
 }
 

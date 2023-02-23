@@ -1,7 +1,8 @@
 import React from "react";
 
-import "./Loader.css";
 import cn from "classnames";
+
+import styles from "./Loader.module.scss";
 
 export enum LoaderSize {
   s = "s",
@@ -24,7 +25,11 @@ export const Loader: React.FC<LoaderProps> = ({
     return null;
   }
 
-  const loaderClass = cn("loader", className, `loader_${size}`);
+  const loaderClass = cn(
+    `${styles.loader}`,
+    className,
+    `${styles[`loader_${size}`]}`
+  );
 
   return <div className={loaderClass}> </div>;
 };

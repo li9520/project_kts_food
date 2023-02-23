@@ -2,9 +2,8 @@ import React from "react";
 
 import cn from "classnames";
 
+import styles from "./Button.module.scss";
 import { Loader, LoaderSize } from "../Loader/Loader";
-
-import "./Button.css";
 
 export type ButtonProps = React.PropsWithChildren<{
   /**
@@ -32,10 +31,10 @@ export const Button: React.FC<ButtonProps> = ({
     onClick && onClick(e);
   };
 
-  const btnClass = cn("button", className, {
-    button_disabled: disabled,
+  const btnClass = cn(`${styles.button}`, className, {
+    [styles.button_disabled]: disabled,
   });
-  const loaderClass = cn("loader_white");
+  const loaderClass = cn(`${styles.loader_white}`);
 
   return (
     <button

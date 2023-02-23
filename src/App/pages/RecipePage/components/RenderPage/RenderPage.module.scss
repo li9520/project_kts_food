@@ -1,0 +1,47 @@
+%conteiner {
+  width: 752px;
+  margin: 0 auto;
+}
+
+.recipe {
+  @extend %conteiner;
+  position: relative;
+  
+  &_img {
+    display: block;
+    width:  100%;
+    height: auto;
+
+  }
+  &_body {
+    background-color: white;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    position: relative;
+   
+    top: -40px;
+    overflow: hidden;
+
+    .wrapper {
+      margin: 0 auto;
+      width: 720px;
+    }
+    &_title {
+      font-size: 27px;
+      font-weight: 500;
+      color: #09051C;
+      line-height: 35.38px;
+      letter-spacing: -0.03em;
+      margin-top: 68px;
+      margin-bottom: 33px;
+    }
+
+    &_time {
+      font-size: 14px;
+      color: #3B3B3B;
+      opacity: 80%;
+      margin-bottom: 25px;
+    } 
+  }
+}
+

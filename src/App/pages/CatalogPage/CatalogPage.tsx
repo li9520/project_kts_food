@@ -1,59 +1,68 @@
 import { useEffect, useState } from "react";
 
-import Card, { CardProps } from "@components/Card";
+import { Button } from "@components/Button";
+import { Loader, LoaderSize } from "@components/Loader";
 import axios from "axios";
-import "./CatalogPage.css";
-import { useNavigate } from "react-router-dom";
+
+import styles from "./CatalogPage.module.scss";
+import RecipesList, { RecipeProps } from "./components/RecipesList";
 
 const CatalogPage = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [cards, setCards] = useState<CardProps[] | null>(null);
-  const navigate = useNavigate();
-  //{/*url: `https://api.spoonacular.com/recipes/complexSearch?apiKey=2593c1f9f006463c98678507137c57e2`,*/}
-  useEffect(() => {
-    const getData = async () => {
-      await axios({
-        method: "get",
-        url: "https://api.spoonacular.com/recipes/random?number=20&apiKey=2593c1f9f006463c98678507137c57e2",
+  const [cards, setCards] = useState<RecipeProps[]>([]);
+  const [currentPage, setcurrentPage] = useState(1);
+  const [recipesPerPage] = useState(12);
+  const [NumberRecipes] = useState(100);
+
+  const API_KEY = "2593c1f9f006463c98678507137c57e2";
+
+  const fetchData = async () => {
+    await axios({
+      method: "get",
+      url: `https://api.spoonacular.com/recipes/complexSearch?number=${NumberRecipes}&apiKey=${API_KEY}`,
+    })
+      .then((response) => {
+        setCards(
+          response.data.results.map(
+            (item: { id: any; image: any; title: any }) => ({
+              id: item.id,
+              image: item.image,
+              title: item.title,
+            })
+          )
+        );
       })
-        .then((response) => {
-          setCards(
-            response.data.recipes.map(
-              (item: { id: any; image: any; title: any }) => ({
-                id: item.id,
-                image: item.image,
-                title: item.title,
-              })
-            )
-          );
-        })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.log(error);
-          setError(error);
-        })
-        .finally(() => setLoading(false));
-    };
-    getData();
+      .catch((error) => setError(error))
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
-  if (loading) return <div>loading...</div>;
+  if (loading) return <Loader size={LoaderSize.l} />;
   if (error) return <div>error!</div>;
 
+  const lastRecipeIndex = currentPage * recipesPerPage;
+  const firstRecipeIndex = lastRecipeIndex - recipesPerPage;
+  const currentRecipes = cards.slice(firstRecipeIndex, lastRecipeIndex);
+  const numberPages = Math.ceil(NumberRecipes / recipesPerPage);
+
+  const nextPage = () =>
+    setcurrentPage((prev) => (prev === numberPages ? 1 : prev + 1));
+  const prevPage = () =>
+    setcurrentPage((prev) => (prev === 1 ? numberPages : prev - 1));
+
   return (
-    <div className="conteiner flex-row wrap">
-      {cards &&
-        cards.map((card) => (
-          <Card
-            title={card.title}
-            key={card.id}
-            subtitle=""
-            image={card.image}
-            id={card.id}
-            onClick={() => navigate(`/receipt/${card.id}`)}
-          />
-        ))}
+    <div className={`${styles.catalog}`}>
+      <RecipesList recipes={currentRecipes} />
+      <div className={`${styles.catalog_paginate}`}>
+        <Button onClick={prevPage}>Prev page</Button>
+        <Button onClick={nextPage}>Next page</Button>
+      </div>
     </div>
   );
 };

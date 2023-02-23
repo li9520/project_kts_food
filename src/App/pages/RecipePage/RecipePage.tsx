@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-import "./RecipePage.css";
+import RenderPage, { RenderPageProps } from "./components/RenderPage";
 
 const RecipePage = () => {
   const { id } = useParams();
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [card, setCards] = useState<null | any>(null);
+  const [card, setCards] = useState<RenderPageProps | null>(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -20,28 +19,19 @@ const RecipePage = () => {
         .then((response) => {
           setCards({
             image: response.data.image,
-            title: response.data.creditsText,
+            title: response.data.title,
             instruction: response.data.instructions,
             readyInMinutes: response.data.readyInMinutes,
           });
         })
-        .catch((error) => setError(error))
-        .finally(() => setLoading(false));
+        .catch((error) => setError(error));
     };
     getData();
-  }, [id]);
+  }, []);
 
-  if (loading) return <div>"loading..."</div>;
   if (error) return <div>"error!"</div>;
 
-  return (
-    <div className="conteiner">
-      <img className="" src={card.image} alt="фото еды" />
-      <div>{card.title}</div>
-      <div>{card.readyInMinutes}</div>
-      <div>{card.instruction}</div>
-    </div>
-  );
+  return <RenderPage {...card} />;
 };
 
 export default RecipePage;
