@@ -44,8 +44,10 @@ const CatalogPage = () => {
   }, []);
 
   useEffect(() => {
-    window.scrollTo({ top: 0 });
-    setLoading(false);
+    if (cards.length !== 0) {
+      window.scrollTo({ top: 0 });
+      setLoading(false);
+    }
   }, [currentPage]);
 
   if (loading) return <Loader size={LoaderSize.l} />;
@@ -66,20 +68,22 @@ const CatalogPage = () => {
   };
 
   return (
-    <div className={`${styles.catalog}`}>
-      <RecipesList recipes={currentRecipes} />
-      <div className={`${styles.catalog_paginate}`}>
-        <Button disabled={currentPage === 1} onClick={prevPage}>
-          Prev page
-        </Button>
-        <div className={`${styles.catalog_paginate_numbering}`}>
-          {`${currentPage} / ${numberPages}`}
+    !loading && (
+      <div className={`${styles.catalog}`}>
+        <RecipesList recipes={currentRecipes} />
+        <div className={`${styles.catalog_paginate}`}>
+          <Button disabled={currentPage === 1} onClick={prevPage}>
+            Prev page
+          </Button>
+          <div className={`${styles.catalog_paginate_numbering}`}>
+            {`${currentPage} / ${numberPages}`}
+          </div>
+          <Button disabled={currentPage === numberPages} onClick={nextPage}>
+            Next page
+          </Button>
         </div>
-        <Button disabled={currentPage === numberPages} onClick={nextPage}>
-          Next page
-        </Button>
       </div>
-    </div>
+    )
   );
 };
 
