@@ -1,6 +1,7 @@
 import { Button } from "@components/Button";
 import { useNavigate } from "react-router-dom";
 
+import timer from "./img/timer.png";
 import styles from "./RenderPage.module.scss";
 
 export type RenderPageProps = {
@@ -26,14 +27,15 @@ const RenderPage: React.FC<RenderPageProps> = ({
     <div className={`${styles.recipe_body_title}`}>{title}</div>
   );
   const recipeTimer = (
-    <div
-      className={`${styles.recipe_body_time}`}
-    >{`${readyInMinutes} MINUTES`}</div>
+    <div className={`${styles.recipe_body_time}`}>
+      <img src={timer} alt="timer" />
+      <div>{`${readyInMinutes} MINUTES`}</div>
+    </div>
   );
 
   const recipe_instraction = (
     <div
-      className="recipe_body_instraction"
+      className={`${styles.recipe_body_instraction}`}
       id="terms-content"
       dangerouslySetInnerHTML={{ __html: instruction }}
     />

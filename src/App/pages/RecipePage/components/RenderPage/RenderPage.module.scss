@@ -37,11 +37,26 @@
     }
 
     &_time {
+      display: flex;
+      align-items: center;
+      justify-content:flex-start;
+      gap: 16px;
       font-size: 14px;
       color: #3B3B3B;
       opacity: 80%;
       margin-bottom: 25px;
+
+      & img {
+        display: block;
+        width: 20px;
+        height: auto;
+      }
     } 
+
+    &_instraction {
+      font-size: 16px;
+      line-height: 1.8em;
+    }
   }
 }
 

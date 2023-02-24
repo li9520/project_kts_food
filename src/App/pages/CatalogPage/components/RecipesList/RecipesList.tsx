@@ -9,6 +9,8 @@ export type RecipeProps = {
   image: string;
   /** Заголовок карточки */
   title: React.ReactNode;
+  ingredients: string[];
+  kcal: string;
 };
 
 type RecipesListProps = {
@@ -23,10 +25,11 @@ const RecipesLits: React.FC<RecipesListProps> = ({ recipes }) => {
         <div className={`${styles.recipes_item}`} key={card.id}>
           <Card
             title={card.title}
-            subtitle=""
+            subtitle={card.ingredients.join(" + ")}
             image={card.image}
             id={card.id}
             onClick={() => navigate(`/receipt/${card.id}`)}
+            content={`${card.kcal} kcal`}
           />
         </div>
       ))}

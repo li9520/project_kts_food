@@ -19,17 +19,25 @@ const CatalogPage = () => {
   const fetchData = async () => {
     await axios({
       method: "get",
-      url: `https://api.spoonacular.com/recipes/complexSearch?number=${NumberRecipes}&apiKey=${API_KEY}`,
+      url: `https://api.spoonacular.com/recipes/complexSearch?number=${NumberRecipes}&addRecipeNutrition=true&apiKey=${API_KEY}`,
     })
       .then((response) => {
         setCards(
-          response.data.results.map(
-            (item: { id: any; image: any; title: any }) => ({
+          response.data.results.map((item: any) => {
+            const ingredients = item.nutrition.ingredients
+              .splice(0, 4)
+              .map((el: { name: string }) => el.name);
+            const kcal = item.nutrition.nutrients.filter(
+              (item: any) => item.name === "Calories"
+            )[0].amount;
+            return {
               id: item.id,
               image: item.image,
               title: item.title,
-            })
-          )
+              ingredients: ingredients,
+              kcal: kcal,
+            };
+          })
         );
       })
       .catch((error) => setError(error))
