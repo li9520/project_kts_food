@@ -1,39 +1,29 @@
-import { useEffect, useState } from "react";
-
+import Resource from "@app/components/Resource";
 import { API_KEY } from "@config/api";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 
 import RenderPage, { RenderPageProps } from "./components/RenderPage";
 
 const RecipePage = () => {
   const { id } = useParams();
-  const [error, setError] = useState(false);
-  const [card, setCards] = useState<RenderPageProps | null>(null);
+  const url = `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await axios({
-        method: "get",
-        url: `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`,
-      })
-        .then((response) => {
-          setCards({
-            image: response.data.image,
-            title: response.data.title,
-            instruction: response.data.instructions,
-            readyInMinutes: response.data.readyInMinutes,
-          });
-        })
-        .catch((error) => setError(error));
+  const setData = (data: any) => {
+    return {
+      image: data.image,
+      title: data.title,
+      instruction: data.instructions,
+      readyInMinutes: data.readyInMinutes,
     };
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
-  if (error) return <div>"error!"</div>;
-
-  return <RenderPage {...card} />;
+  return (
+    <Resource
+      url={url}
+      setData={setData}
+      render={(card: RenderPageProps) => <RenderPage {...card} />}
+    ></Resource>
+  );
 };
 
 export default RecipePage;
