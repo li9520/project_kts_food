@@ -18,5 +18,9 @@
     @extend %flex_row;
     margin-top: 16px;
     margin-bottom: 16px;
+
+    &_numbering {
+      font-size: 18px;
+    }
   }
 }

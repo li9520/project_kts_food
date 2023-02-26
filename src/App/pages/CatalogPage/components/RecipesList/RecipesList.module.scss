@@ -4,7 +4,7 @@
 
   justify-content: space-between;
 
-  column-gap: 17px;
+  column-gap: 30px;
   row-gap: 35px;
 
   flex-wrap: wrap;
@@ -12,10 +12,9 @@
 
 .recipes {
   @extend %flex_row;
-  margin: 0 -14px;
+  padding: 0 5px;
     &_item {
       box-sizing: border-box;
-      width: calc(1100px / 3 - 34px);
-      margin: 0 15px;
+      width: calc((1100px - 70px) / 3);
     }
 }
