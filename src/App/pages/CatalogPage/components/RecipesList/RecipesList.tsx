@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 import styles from "./RecipesList.module.scss";
 
 export type RecipeProps = {
-  id: any;
-  /** URL изображения */
+  id: number;
   image: string;
-  /** Заголовок карточки */
   title: React.ReactNode;
-  ingredients: string[];
-  kcal: string;
+  nutrition: {
+    ingredients: { name: string }[];
+    nutrients: { name: string; amount: number }[];
+  };
 };
 
 type RecipesListProps = {
@@ -20,19 +20,25 @@ type RecipesListProps = {
 const RecipesLits: React.FC<RecipesListProps> = ({ recipes }) => {
   const navigate = useNavigate();
   return (
-    <div className={`${styles.recipes}`}>
-      {recipes.map((card: RecipeProps) => (
-        <div className={`${styles.recipes_item}`} key={card.id}>
-          <Card
-            title={card.title}
-            subtitle={card.ingredients.join(" + ")}
-            image={card.image}
-            id={card.id}
-            onClick={() => navigate(`/receipt/${card.id}`)}
-            content={`${card.kcal} kcal`}
-          />
-        </div>
-      ))}
+    <div className={styles.recipes}>
+      {recipes.map((card: RecipeProps) => {
+        const ingredientsList = card.nutrition.ingredients
+          .splice(0, 4)
+          .map((el) => el.name);
+        const kcal = card.nutrition.nutrients.filter(
+          (item) => item.name === "Calories"
+        )[0].amount;
+        return (
+          <div className={styles.recipes_item} key={card.id}>
+            <Card
+              {...card}
+              content={`${kcal} kcal`}
+              subtitle={ingredientsList.join(" + ")}
+              onClick={() => navigate(`/receipt/${card.id}`)}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 };

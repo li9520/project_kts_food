@@ -25,11 +25,9 @@ export const Loader: React.FC<LoaderProps> = ({
     return null;
   }
 
-  const loaderClass = cn(
-    `${styles.loader}`,
-    className,
-    `${styles[`loader_${size}`]}`
-  );
+  const loaderClass = cn(styles.loader, `${styles[`loader_${size}`]}`, {
+    [styles[`${className}`]]: className,
+  });
 
   return <div className={loaderClass}> </div>;
 };

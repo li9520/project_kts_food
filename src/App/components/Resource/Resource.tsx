@@ -1,24 +1,29 @@
 import { useEffect, useState } from "react";
 
 import axios from "axios";
-
+/*
 export type ResourceProps = {
   url: string;
   render: Function;
   setData: Function;
 };
+*/
+export type ResourceProps<T> = {
+  url: string;
+  render: (data: T | null) => React.ReactElement;
+};
 
-const Resource: React.FC<ResourceProps> = ({ url, render, setData }) => {
+const Resource = <T extends object>({ url, render }: ResourceProps<T>) => {
   const [error, setError] = useState(false);
   const [card, setCard] = useState(null);
 
   const fetchData = async () => {
     await axios({
       method: "get",
-      url: `${url}`,
+      url: url,
     })
       .then((response) => {
-        return setCard(setData(response.data));
+        return setCard(response.data);
       })
       .catch((error) => setError(error));
   };

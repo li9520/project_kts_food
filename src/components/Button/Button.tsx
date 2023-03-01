@@ -31,10 +31,10 @@ export const Button: React.FC<ButtonProps> = ({
     onClick && onClick(e);
   };
 
-  const btnClass = cn(`${styles.button}`, className, {
+  const btnClass = cn(styles.button, {
+    [styles[`${className}`]]: className,
     [styles.button_disabled]: disabled,
   });
-  const loaderClass = cn(`${styles.loader_white}`);
 
   return (
     <button
@@ -45,7 +45,11 @@ export const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {loading && (
-        <Loader loading={loading} size={LoaderSize.s} className={loaderClass} />
+        <Loader
+          loading={loading}
+          size={LoaderSize.s}
+          className="loader_white"
+        />
       )}
       {children}
     </button>

@@ -17,7 +17,7 @@ export type CardProps = {
 };
 
 const CardImage = ({ image }: { image: string }) => {
-  return <img className={`${styles.card_img}`} src={image} alt="фото еды" />;
+  return <img className={styles.card_img} src={image} alt="фото еды" />;
 };
 
 const Card: React.FC<CardProps> = ({
@@ -31,17 +31,15 @@ const Card: React.FC<CardProps> = ({
     onClick && onClick(e);
   };
 
-  const titleDom = <div className={`${styles.card_title}`}>{title}</div>;
-  const subtitleDom = (
-    <div className={`${styles.card_subtitle}`}>{subtitle}</div>
-  );
+  const titleDom = <div className={styles.card_title}>{title}</div>;
+  const subtitleDom = <div className={styles.card_subtitle}>{subtitle}</div>;
   const contentDom = content && (
-    <div className={`${styles.card_content}`}>{content}</div>
+    <div className={styles.card_content}>{content}</div>
   );
 
   return (
-    <div className={`${styles.card}`} onClick={handleClick}>
-      <div className={`${styles.card_body}`}>
+    <div className={styles.card} onClick={handleClick}>
+      <div className={styles.card_body}>
         <CardImage image={image} />
         {titleDom}
         {subtitleDom}

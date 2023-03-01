@@ -7,12 +7,13 @@ import styles from "./Paginate.module.scss";
 import RecipesList, { RecipeProps } from "../RecipesList";
 
 export type PaginateProps = {
-  recipes: RecipeProps[];
+  results: RecipeProps[];
 };
 
-const Paginate: React.FC<PaginateProps> = ({ recipes }) => {
+const Paginate: React.FC<PaginateProps> = ({ results }) => {
+  const recipes = results;
   const [loading, setLoading] = useState(true);
-  const [currentPage, setcurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [recipesPerPage] = useState(12);
   const numberRecipes = recipes.length;
 
@@ -30,21 +31,21 @@ const Paginate: React.FC<PaginateProps> = ({ recipes }) => {
 
   const nextPage = () => {
     setLoading(true);
-    setcurrentPage((prev) => prev + 1);
+    setCurrentPage((prev) => prev + 1);
   };
   const prevPage = () => {
     setLoading(true);
-    setcurrentPage((prev) => prev - 1);
+    setCurrentPage((prev) => prev - 1);
   };
   return (
     !loading && (
-      <div className={`${styles.catalog}`}>
+      <div className={styles.catalog}>
         <RecipesList recipes={currentRecipes} />
-        <div className={`${styles.catalog_paginate}`}>
+        <div className={styles.catalog_paginate}>
           <Button disabled={currentPage === 1} onClick={prevPage}>
             Prev page
           </Button>
-          <div className={`${styles.catalog_paginate_numbering}`}>
+          <div className={styles.catalog_paginate_numbering}>
             {`${currentPage} / ${numberPages}`}
           </div>
           <Button disabled={currentPage === numberPages} onClick={nextPage}>

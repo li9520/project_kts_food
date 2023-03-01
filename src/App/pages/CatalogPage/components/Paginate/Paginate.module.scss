@@ -1,5 +1,6 @@
-%conteiner {
-  width: 1100px;
+%container {
+  max-width: 1100px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -11,7 +12,7 @@
 }
 
 .catalog {
-  @extend %conteiner;
+  @extend %container;
   overflow: hidden;
 
   &_paginate {

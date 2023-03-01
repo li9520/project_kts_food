@@ -1,11 +1,12 @@
 $pageWidth: 752px;
-%conteiner {
-  width: $pageWidth;
+%container {
+  max-width: $pageWidth;
+  width: 100%;
   margin: 0 auto;
 }
 
 .recipe {
-  @extend %conteiner;
+  @extend %container;
   position: relative;
   
   &_img {
@@ -88,4 +89,5 @@ $pageWidth: 752px;
     margin: 5px;
   }
 }
+
 

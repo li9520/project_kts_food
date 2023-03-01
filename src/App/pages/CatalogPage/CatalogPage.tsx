@@ -1,36 +1,22 @@
 import Resource from "@app/components/Resource";
-import { API_KEY } from "@config/api";
-//import { CATALOG } from "@config/catalog";
+import { API_KEY, URLmap } from "@config/api";
+import { CATALOG } from "@config/catalog";
 
-import Paginate, { PaginateProps } from "./components/Paginate";
+import Paginate from "./components/Paginate";
+
+const numberRecipes = 100;
 
 const CatalogPage = () => {
-  const numberRecipes = 100;
-  const url = `https://api.spoonacular.com/recipes/complexSearch?number=${numberRecipes}&addRecipeNutrition=true&apiKey=${API_KEY}`;
-  const setData = (data: any) => {
-    return data.results.map((item: any) => {
-      const ingredients = item.nutrition.ingredients
-        .splice(0, 4)
-        .map((el: { name: string }) => el.name);
-      const kcal = item.nutrition.nutrients.filter(
-        (item: any) => item.name === "Calories"
-      )[0].amount;
-      return {
-        id: item.id,
-        image: item.image,
-        title: item.title,
-        ingredients: ingredients,
-        kcal: kcal,
-      };
-    });
-  };
+  const getUrl = URLmap.list;
+  const url = getUrl({
+    apiKey: API_KEY,
+    number: numberRecipes,
+    addRecipeNutrition: true,
+  });
 
   return (
-    <Resource
-      url={url}
-      render={(recipes: PaginateProps) => <Paginate recipes={recipes} />}
-      setData={setData}
-    ></Resource>
+    <Resource url={url} render={(data) => <Paginate {...data} />}></Resource>
+    //<Paginate recipes={CATALOG} />
   );
 };
 
