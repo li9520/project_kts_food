@@ -54,7 +54,10 @@ export default class FoodStore implements IFoodStore, ILocalStore {
     return this._meta;
   }
 
-  async getOrganizationRecipeList(search: string = ""): Promise<void> {
+  async getOrganizationRecipeList(
+    search: string = "",
+    type: string = ""
+  ): Promise<void> {
     const getUrl = URLmap.list;
     this._meta = Meta.loading;
     this._list = getInitialCollectionModel();
@@ -64,6 +67,7 @@ export default class FoodStore implements IFoodStore, ILocalStore {
         method: HTTPMethod.GET,
         endpoint: getUrl({
           query: search,
+          type: type,
           apiKey: API_KEY,
           number: numberRecipes,
           addRecipeNutrition: true,
@@ -90,12 +94,22 @@ export default class FoodStore implements IFoodStore, ILocalStore {
 
   destroy(): void {
     this._qpReaction();
+    this._typeReaction();
   }
 
   private readonly _qpReaction: IReactionDisposer = reaction(
     () => rootStore.query.getParam("search"),
     async (search) => {
-      await this.getOrganizationRecipeList(search as string);
+      const type = rootStore.query.getParam("type");
+      await this.getOrganizationRecipeList(search as string, type as string);
+    }
+  );
+
+  private readonly _typeReaction: IReactionDisposer = reaction(
+    () => rootStore.query.getParam("type"),
+    async (type) => {
+      const search = rootStore.query.getParam("search");
+      await this.getOrganizationRecipeList(search as string, type as string);
     }
   );
 }

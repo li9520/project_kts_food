@@ -35,6 +35,7 @@ export default class ApiStore {
         method: method,
         url: this._createUrl(endpoint),
       });
+
       result.data = data;
       result.success = true;
       return result;

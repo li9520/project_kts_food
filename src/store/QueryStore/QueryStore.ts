@@ -1,32 +1,48 @@
+import { Option } from "@components/MultiDropdown";
 import { ILocalStore } from "@utils/useLocalStote";
 import { action, computed, makeObservable, observable } from "mobx";
 
-type PrivateFields = "_query";
+type PrivateFields = "_search" | "_type";
 
 export interface IQueryStore {
-  setQuery(value: string): void;
-  query: string;
+  setSearch(search: string): void;
+  setType(type: Option[]): void;
+  search: string;
+  type: Option[];
 }
 
 export default class QueryStore implements IQueryStore, ILocalStore {
   constructor() {
     makeObservable<QueryStore, PrivateFields>(this, {
-      _query: observable,
-      query: computed,
-      setQuery: action,
+      _search: observable,
+      _type: observable.ref,
+      search: computed,
+      type: computed,
+      setSearch: action.bound,
+      setType: action.bound,
     });
   }
-  _query: string = "";
+  private _search: string = "";
+  private _type: Option[] = [];
 
-  setQuery(value: string): void {
-    this._query = value;
+  setSearch(search: string): void {
+    this._search = search;
   }
 
-  get query(): string {
-    return this._query;
+  setType(type: Option[]): void {
+    this._type = type;
+  }
+
+  get search(): string {
+    return this._search;
+  }
+
+  get type(): Option[] {
+    return this._type;
   }
 
   destroy(): void {
-    //
+    this._search = "";
+    this._type = [];
   }
 }

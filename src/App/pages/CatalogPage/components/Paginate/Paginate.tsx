@@ -3,7 +3,7 @@ import React from "react";
 
 import { Button } from "@components/Button";
 import { RecipeItemModel } from "@store/models/Food";
-import PaginateStore from "@store/PaginateStore/PaginateStore";
+import PaginateStore from "@store/PaginateStore";
 import { useLocalStore } from "@utils/useLocalStote";
 import { observer } from "mobx-react-lite";
 

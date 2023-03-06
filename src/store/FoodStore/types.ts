@@ -1,7 +1,7 @@
 import { RecipeItemModel } from "@store/models/Food";
 
 export interface IFoodStore {
-  getOrganizationRecipeList(): Promise<void>;
+  getOrganizationRecipeList(search: string, type: string): Promise<void>;
   list: RecipeItemModel[];
   meta: Meta;
 }
