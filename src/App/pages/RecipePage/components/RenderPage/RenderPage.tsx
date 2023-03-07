@@ -1,22 +1,13 @@
-import { ReactNode } from "react";
-
 import { Button } from "@components/Button";
-import { URLmap } from "@config/api";
+import { URLmap } from "@store/ApiStore";
+import { IngredientModel, RecipeModel } from "@store/models/recipe";
 import { useNavigate } from "react-router-dom";
 
 import serving_img from "./img/servings.png";
 import timer_img from "./img/timer.png";
 import styles from "./RenderPage.module.scss";
 
-type ingredientProp = {
-  id: number;
-  image: string;
-  amount: number;
-  unit: string;
-  name: string;
-};
-
-const CardIngredient: React.FC<ingredientProp> = ({
+const CardIngredient: React.FC<IngredientModel> = ({
   image,
   amount,
   unit,
@@ -36,25 +27,19 @@ const CardIngredient: React.FC<ingredientProp> = ({
   );
 };
 
-export type RenderPageProps = {
-  title: ReactNode;
-  image: string;
-  instructions: any;
-  readyInMinutes: number;
-  servings: number;
-  extendedIngredients: ingredientProp[];
+type RenderPageProps = {
+  recipe: RecipeModel;
 };
-
-const RenderPage: React.FC<RenderPageProps> = ({
-  image,
-  title,
-  readyInMinutes,
-  instructions,
-  extendedIngredients,
-  servings,
-}) => {
+const RenderPage: React.FC<RenderPageProps> = ({ recipe }) => {
   const navigate = useNavigate();
-
+  const {
+    image,
+    title,
+    readyInMinutes,
+    instructions,
+    extendedIngredients,
+    servings,
+  } = recipe;
   const recipeImage = <img className={styles.recipe_img} alt="" src={image} />;
   const recipeTitle = <h1 className={styles.recipe_body_title}>{title}</h1>;
   const recipeInfo = (
@@ -86,7 +71,6 @@ const RenderPage: React.FC<RenderPageProps> = ({
       <h2>Instruction</h2>
       <div
         className={styles.recipe_body_instraction}
-        id="terms-content"
         dangerouslySetInnerHTML={{ __html: instructions }}
       />
     </>

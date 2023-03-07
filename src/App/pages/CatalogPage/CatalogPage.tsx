@@ -1,23 +1,56 @@
-import Resource from "@app/components/Resource";
-import { API_KEY, URLmap } from "@config/api";
-import { CATALOG } from "@config/catalog";
+import React from "react";
 
+import { Input } from "@components/Input/Input";
+import { Option } from "@components/MultiDropdown";
+import FoodStore from "@store/FoodStore";
+import { Meta } from "@store/FoodStore/types";
+import QueryStore from "@store/QueryStore";
+import { useLocalStore } from "@utils/useLocalStote";
+import { observer } from "mobx-react-lite";
+
+import styles from "./CatalogPage.module.scss";
+import Filter from "./components/Filter";
 import Paginate from "./components/Paginate";
 
-const numberRecipes = 100;
-
 const CatalogPage = () => {
-  const getUrl = URLmap.list;
-  const url = getUrl({
-    apiKey: API_KEY,
-    number: numberRecipes,
-    addRecipeNutrition: true,
-  });
+  const foodStore = useLocalStore(() => new FoodStore());
+  const queryStore = useLocalStore(() => new QueryStore());
+
+  const handleChangeSearch = React.useCallback(
+    (value: string) => {
+      queryStore.setSearch(value);
+    },
+    [queryStore]
+  );
+
+  const handleChangeType = React.useCallback(
+    (options: Option[]) => {
+      queryStore.setType(options);
+    },
+    [queryStore]
+  );
+
+  React.useEffect(() => {
+    foodStore.getOrganizationRecipeList();
+  }, [foodStore]);
 
   return (
-    <Resource url={url} render={(data) => <Paginate {...data} />}></Resource>
-    //<Paginate recipes={CATALOG} />
+    <div className={styles.catalogPage}>
+      <Input
+        value={queryStore.search}
+        onChange={handleChangeSearch}
+        placeholder={"What are you looking for?"}
+      />
+
+      <Filter filter={queryStore.type} setFilter={handleChangeType} />
+
+      {foodStore.meta === Meta.success ? (
+        <Paginate recipes={foodStore.list} />
+      ) : (
+        <Paginate loading />
+      )}
+    </div>
   );
 };
 
-export default CatalogPage;
+export default observer(CatalogPage);
