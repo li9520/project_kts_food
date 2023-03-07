@@ -1,5 +1,5 @@
 import { Button } from "@components/Button";
-import { URLmap } from "@config/api";
+import { URLmap } from "@store/ApiStore";
 import { IngredientModel, RecipeModel } from "@store/models/recipe";
 import { useNavigate } from "react-router-dom";
 
@@ -71,7 +71,6 @@ const RenderPage: React.FC<RenderPageProps> = ({ recipe }) => {
       <h2>Instruction</h2>
       <div
         className={styles.recipe_body_instraction}
-        id="terms-content"
         dangerouslySetInnerHTML={{ __html: instructions }}
       />
     </>

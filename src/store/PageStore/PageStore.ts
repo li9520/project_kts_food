@@ -1,5 +1,4 @@
-import { API_KEY, domen, URLmap } from "@config/api";
-import ApiStore, { HTTPMethod } from "@store/ApiStore";
+import ApiStore, { HTTPMethod, URLmap } from "@store/ApiStore";
 import { normalizeRecipe, RecipeApi, RecipeModel } from "@store/models/recipe";
 import { ILocalStore } from "@utils/useLocalStote";
 import {
@@ -26,7 +25,7 @@ export default class PageStore implements IPageStore, ILocalStore {
   _data: RecipeModel | null = null;
   private _meta: Meta = Meta.initial;
 
-  private readonly _apiStore = new ApiStore(domen);
+  private readonly _apiStore = new ApiStore();
 
   get meta(): Meta {
     return this._meta;
@@ -44,7 +43,6 @@ export default class PageStore implements IPageStore, ILocalStore {
     const response = await this._apiStore.request<{ results: RecipeApi }>({
       method: HTTPMethod.GET,
       endpoint: getUrl(id, {
-        apiKey: API_KEY,
         includeNutrition: true,
       }),
     });
@@ -64,6 +62,7 @@ export default class PageStore implements IPageStore, ILocalStore {
     });
   }
   destroy(): void {
-    //
+    this._meta = Meta.loading;
+    this._data = null;
   }
 }

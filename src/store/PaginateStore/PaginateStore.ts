@@ -1,3 +1,4 @@
+import rootStore from "@store/RootStore";
 import { ILocalStore } from "@utils/useLocalStote";
 import { action, computed, makeObservable, observable } from "mobx";
 
@@ -22,10 +23,12 @@ export default class PaginateStore implements IPaginateStore, ILocalStore {
 
   next(): void {
     this._currentPage = this._currentPage + 1;
+    rootStore.query.changeParams("page", String(this._currentPage));
   }
 
   prev(): void {
     this._currentPage = this._currentPage - 1;
+    rootStore.query.changeParams("page", String(this._currentPage));
   }
 
   get currentPage(): number {

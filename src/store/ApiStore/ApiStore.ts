@@ -1,4 +1,28 @@
 import axios from "axios";
+import queryString from "query-string";
+
+const domen = "https://api.spoonacular.com";
+export const API_KEY = "4ea0ec47d5fb42fea8b7520ea4838d26";
+//export const API_KEY = "2593c1f9f006463c98678507137c57e2";
+
+export const URLmap = {
+  list: (params: {
+    number: number;
+    type: string;
+    query: string;
+    addRecipeNutrition: boolean;
+  }) => `/recipes/complexSearch?${queryString.stringify(params)}`,
+
+  recipe: (
+    id: string,
+    params: {
+      includeNutrition: boolean;
+    }
+  ) => `/recipes/${id}/information?${queryString.stringify(params)}`,
+
+  ingredientImg: (image: string) =>
+    `https://spoonacular.com/cdn/ingredients_100x100/${image}`,
+};
 
 export enum HTTPMethod {
   GET = "get",
@@ -10,13 +34,8 @@ export type ApiResponse<T> = {
 };
 
 export default class ApiStore {
-  private _baseUrl: string;
-  constructor(baseUrl: string) {
-    this._baseUrl = baseUrl;
-  }
-
   private _createUrl(endpoint: string) {
-    return `${this._baseUrl}${endpoint}`;
+    return `${domen}${endpoint}&apiKey=${API_KEY}`;
   }
 
   async request<T>({

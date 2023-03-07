@@ -10,10 +10,11 @@ import RenderPage from "./components/RenderPage";
 
 const RecipePage = () => {
   const pageStore = useLocalStore(() => new PageStore());
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
   React.useEffect(() => {
-    pageStore.getOrganizationRecipe(id as string);
+    if (!id) return;
+    pageStore.getOrganizationRecipe(id);
   }, [id, pageStore]);
 
   return pageStore.meta === Meta.success ? (

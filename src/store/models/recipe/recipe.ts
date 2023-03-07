@@ -9,7 +9,7 @@ import {
 export type RecipeApi = {
   title: ReactNode;
   image: string;
-  instructions: any;
+  instructions: string;
   readyInMinutes: number;
   servings: number;
   extendedIngredients: IngredientApi[];
@@ -18,7 +18,7 @@ export type RecipeApi = {
 export type RecipeModel = {
   title: ReactNode;
   image: string;
-  instructions: any;
+  instructions: string;
   readyInMinutes: number;
   servings: number;
   extendedIngredients: IngredientModel[];

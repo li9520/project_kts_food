@@ -1,4 +1,5 @@
 import { Option } from "@components/MultiDropdown";
+import rootStore from "@store/RootStore";
 import { ILocalStore } from "@utils/useLocalStote";
 import { action, computed, makeObservable, observable } from "mobx";
 
@@ -27,10 +28,13 @@ export default class QueryStore implements IQueryStore, ILocalStore {
 
   setSearch(search: string): void {
     this._search = search;
+    rootStore.query.changeParams("query", this._search);
   }
 
   setType(type: Option[]): void {
     this._type = type;
+    const typeSrt = this._type.map((item) => item.key).join(" ");
+    rootStore.query.changeParams("type", typeSrt);
   }
 
   get search(): string {

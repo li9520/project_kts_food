@@ -1,5 +1,4 @@
-import { API_KEY, domen, URLmap } from "@config/api";
-import ApiStore, { HTTPMethod } from "@store/ApiStore";
+import ApiStore, { HTTPMethod, URLmap } from "@store/ApiStore";
 import {
   normalizeRecipeItemModel,
   RecipeItemApi,
@@ -44,7 +43,7 @@ export default class FoodStore implements IFoodStore, ILocalStore {
 
   private _meta: Meta = Meta.initial;
 
-  private readonly _apiStore = new ApiStore(domen);
+  private readonly _apiStore = new ApiStore();
 
   get list(): RecipeItemModel[] {
     return linearizeCollection(this._list);
@@ -68,7 +67,6 @@ export default class FoodStore implements IFoodStore, ILocalStore {
         endpoint: getUrl({
           query: search,
           type: type,
-          apiKey: API_KEY,
           number: numberRecipes,
           addRecipeNutrition: true,
         }),
